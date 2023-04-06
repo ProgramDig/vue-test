@@ -2,6 +2,7 @@
   import MyButton from "@/components/UI/MyButton.vue";
 
   const {post} = defineProps(["post"])
+  const emits = defineEmits(["delete"])
 </script>
 
 <template>
@@ -11,7 +12,11 @@
             <div><strong>Опис:</strong> {{ post.body }}</div>
         </div>
         <div class="post__btn">
-            <MyButton >Видалити</MyButton>
+            <MyButton
+                @click="emits('delete', post)"
+            >
+                Видалити
+            </MyButton>
         </div>
     </div>
 </template>

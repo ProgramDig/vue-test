@@ -13,12 +13,15 @@ const posts = ref([
 const createPost = (post) => {
     posts.value.push(post);
 }
+const deletePost = (post) => {
+    posts.value = posts.value.filter((p) => p.id !== post.id);
+}
 </script>
 
 <template>
     <div class="app">
         <PostForm @create="createPost"/>
-        <PostList :posts="posts"/>
+        <PostList :posts="posts" @delete="deletePost"/>
     </div>
 </template>
 

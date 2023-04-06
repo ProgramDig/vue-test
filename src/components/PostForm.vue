@@ -14,24 +14,27 @@
 </script>
 
 <template>
-    <form class="form" @submit.prevent>
-        <MyInput
+    <div>
+        <h2 class="form__title">Створити пост</h2>
+        <form class="form" @submit.prevent>
+            <MyInput
                 v-model="post.title"
                 type="text"
                 placeholder="title"
-        />
-        <MyInput
+            />
+            <MyInput
                 v-model="post.body"
                 type="text"
                 placeholder="body"
-        />
-        <MyButton
+            />
+            <MyButton
                 style="margin-top: 15px"
                 @click="createPost"
-        >
-            Додати
-        </MyButton>
-    </form>
+            >
+                Додати
+            </MyButton>
+        </form>
+    </div>
 </template>
 
 <style>
@@ -39,7 +42,7 @@
     display: flex;
     flex-direction: column;
 }
-
-
-
+.form__title {
+    text-align: center;
+}
 </style>
