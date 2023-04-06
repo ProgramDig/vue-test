@@ -7,6 +7,9 @@
   const emits = defineEmits(["create"])
 
   const createPost = () => {
+      if(post.value.body === "" && post.value.title === "") {
+          return alert("Заповніть всі поля в форму!")
+      }
       post.value.id = Date.now();
       emits("create", post.value)
       post.value = {title: "", body: ""}
@@ -18,12 +21,12 @@
         <h2 class="form__title">Створити пост</h2>
         <form class="form" @submit.prevent>
             <MyInput
-                v-model="post.title"
+                v-model.trim="post.title"
                 type="text"
                 placeholder="Заголовок поста"
             />
             <MyInput
-                v-model="post.body"
+                v-model.trim="post.body"
                 type="text"
                 placeholder="Вміст поста"
             />
@@ -44,5 +47,6 @@
 }
 .form__title {
     text-align: center;
+    margin-bottom: 15px;
 }
 </style>

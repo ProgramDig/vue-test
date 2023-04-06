@@ -1,17 +1,15 @@
 <script setup>
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
+import axios from "axios";
 import PostForm from "@/components/PostForm.vue";
 import PostList from "@/components/PostList.vue";
 import MyDialog from "@/components/UI/MyDialog.vue";
 import MyButton from "@/components/UI/MyButton.vue";
 
-const posts = ref([
-    {id: 1, title: "JavaScript 1", body: "Опис поста 1"},
-    {id: 2, title: "JavaScript 2", body: "Опис поста 2"},
-    {id: 3, title: "JavaScript 3", body: "Опис поста 3"},
-    {id: 4, title: "JavaScript 4", body: "Опис поста 4"},
-]);
+const posts = ref([]);
 const isDialogVisible = ref(false);
+const isPostsLoading = ref(false);
+
 const createPost = (post) => {
     posts.value.push(post);
     isDialogVisible.value = false;
@@ -22,18 +20,50 @@ const deletePost = (post) => {
 const showDialog = () => {
     isDialogVisible.value = true;
 }
+
+const fetchPosts = async () => {
+    try {
+        isPostsLoading.value = true
+        setTimeout(async () => {
+            const response = await axios.get("https://jsonplaceholder.typicode.com/posts?_limit=10")
+            posts.value = response.data;
+            isPostsLoading.value = false
+        }, 1000)
+    } catch (e) {
+        isPostsLoading.value = false
+        alert(e.message)
+    }
+}
+
+onMounted(() => {
+    fetchPosts()
+})
 </script>
 
 <template>
     <div class="app">
         <h1 class="title__post__page">Сторінка з постами</h1>
-        <MyButton @click="showDialog">
+        <MyButton
+                @click="fetchPosts"
+                style="margin-right: 15px"
+        >
+            Загрузити пости
+        </MyButton>
+        <MyButton
+                @click="showDialog"
+                style="margin-top: 15px"
+        >
             Додати пост
         </MyButton>
         <MyDialog v-model:show="isDialogVisible" @update:show="false">
             <PostForm @create="createPost"/>
         </MyDialog>
-        <PostList :posts="posts" @delete="deletePost"/>
+        <PostList
+                :posts="posts"
+                @delete="deletePost"
+                v-if="!isPostsLoading.value"
+        />
+        <div v-else class="loading">Йде завантаження постів...</div>
     </div>
 </template>
 
@@ -51,5 +81,10 @@ const showDialog = () => {
 
 .title__post__page {
     text-align: center;
+}
+
+.loading {
+    text-align: center;
+    color: blueviolet;
 }
 </style>
