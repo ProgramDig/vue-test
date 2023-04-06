@@ -20,12 +20,12 @@
             <MyInput
                 v-model="post.title"
                 type="text"
-                placeholder="title"
+                placeholder="Заголовок поста"
             />
             <MyInput
                 v-model="post.body"
                 type="text"
-                placeholder="body"
+                placeholder="Вміст поста"
             />
             <MyButton
                 style="margin-top: 15px"
